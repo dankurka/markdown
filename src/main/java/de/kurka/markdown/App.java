@@ -28,19 +28,10 @@ public class App {
 
     display("", mdRoot);
 
-    new MDTranslater(new TocCreator(), new LinkChecker(), new MarkupWriter(new File(
+    new MDTranslater(new TocCreator(), new MarkupWriter(new File(
         "/Users/kurt/Documents/workspace-mgwt/markdown/target/html/"))).render(mdRoot);
 
-    // String markdownToHtml =
-    // new PegDownProcessor().markdownToHtml("asdf [link](target)".toCharArray());
-    // System.out.println(markdownToHtml);
-    //
-    // RootNode rootNode = new
-    // PegDownProcessor().parseMarkdown("asdf [link](target)".toCharArray());
-    //
-    // List<Node> children = rootNode.getChildren();
-    //
-    // recurse(children);
+
   }
 
 

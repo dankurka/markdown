@@ -74,7 +74,8 @@ public class TocCreator {
 
       buffer.append("<li>");
       //TODO escape HTML
-      buffer.append("<a href='" + url.toString() + "'>" + node.getName()
+      buffer.append("<a href='" + url.toString() + "'>"
+          + node.getName().substring(0, node.getName().length() - ".md".length())
           + "</a>");
       buffer.append("</li>");
     }

@@ -52,7 +52,8 @@ public class FileSystemTraverser {
     } else if (file.isFile()) {
       // TODO more infos
       MDNode mdNode =
-          new MDNode(parent, file.getName(), file.getAbsolutePath(), depth, path + file.getName());
+          new MDNode(parent, file.getName(), file.getAbsolutePath(), depth, path
+              + changeExtension(file.getName()));
       parent.addChild(mdNode);
 
     } else {
@@ -61,6 +62,10 @@ public class FileSystemTraverser {
 
     return null;
 
+  }
+
+  private String changeExtension(String fileName) {
+    return fileName.substring(0, fileName.length() - ".md".length()) + ".html";
   }
 
   private boolean ignoreFile(File file) {

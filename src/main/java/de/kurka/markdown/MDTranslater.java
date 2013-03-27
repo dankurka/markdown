@@ -1,22 +1,21 @@
 /*
  * Copyright 2013 Daniel Kurka
  * 
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
  * 
  * http://www.apache.org/licenses/LICENSE-2.0
  * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
 package de.kurka.markdown;
 
 import org.apache.commons.io.IOUtils;
 import org.pegdown.PegDownProcessor;
+import org.pegdown.ast.RootNode;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -34,19 +33,14 @@ public class MDTranslater {
 
   private final TocCreator tocCreator;
 
-  private final LinkChecker linkChecker;
-
   private final MarkupWriter writer;
-
-
 
   private String template;
 
   private MDParent root;
 
-  public MDTranslater(TocCreator tocCreator, LinkChecker linkChecker, MarkupWriter writer) {
+  public MDTranslater(TocCreator tocCreator, MarkupWriter writer) {
     this.tocCreator = tocCreator;
-    this.linkChecker = linkChecker;
     this.writer = writer;
 
   }
@@ -55,8 +49,8 @@ public class MDTranslater {
     this.root = root;
     template = readTemplate();
 
-
     renderTree(root);
+
   }
 
   private String readTemplate() {
@@ -77,7 +71,6 @@ public class MDTranslater {
 
     } else {
 
-
       try {
 
         String markDown = getNodeContent(node.getPath());
@@ -85,13 +78,13 @@ public class MDTranslater {
         // parse description for TOC
 
         String htmlMarkDown = pegDownProcessor.markdownToHtml(markDown);
-        
+        RootNode rootNode = pegDownProcessor.parseMarkdown(markDown.toCharArray());
+
         String toc = tocCreator.createTocForNode(root, node);
 
         String html = fillTemplate(htmlMarkDown, toc);
 
         writer.writeHTML(node, html);
-
 
       } catch (TranslaterException e) {
         // TODO Auto-generated catch block

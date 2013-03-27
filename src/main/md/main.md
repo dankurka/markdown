@@ -2,4 +2,4 @@
 
 ich bin main
 
-und habe einen [tollen link](toll)
+und habe einen [tollen link](toll.html)
