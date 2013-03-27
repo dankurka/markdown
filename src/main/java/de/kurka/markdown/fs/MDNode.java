@@ -17,12 +17,51 @@ package de.kurka.markdown.fs;
 
 public class MDNode {
   private final String name;
+  private final MDParent parent;
+  private final String path;
 
-  public MDNode(String name) {
+  private String description;
+  private final int depth;
+  private final String relativePath;
+
+  public MDNode(MDParent parent, String name, String path, int depth, String relativePath) {
+    this.parent = parent;
     this.name = name;
+    this.path = path;
+    this.depth = depth;
+    this.relativePath = relativePath;
   }
 
   public String getName() {
     return name;
+  }
+
+  public MDParent getParent() {
+    return parent;
+  }
+
+  public String getPath() {
+    return path;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public int getDepth() {
+    return depth;
+  }
+
+  @Override
+  public String toString() {
+    return "MDNode [name=" + name + ", depth=" + depth + "]";
+  }
+
+  public String getRelativePath() {
+    return relativePath;
   }
 }

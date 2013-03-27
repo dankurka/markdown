@@ -18,11 +18,16 @@ import java.util.List;
 
 public class MDParent extends MDNode {
 
-  public MDParent(String name) {
-    super(name);
+  public MDParent(MDParent parent, String name, String path, int depth, String relativePath) {
+    super(parent, name, path, depth, relativePath);
   }
 
   private List<MDNode> children = new LinkedList<MDNode>();
+
+  @Override
+  public String toString() {
+    return "MDParent [getName()=" + getName() + ", getDepth()=" + getDepth() + "]";
+  }
 
   public void addChild(MDNode node) {
     children.add(node);

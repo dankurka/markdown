@@ -13,14 +13,8 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package de.kurka.markdown.fs;
+package de.kurka.markdown;
 
-
-public class MDRoot extends MDParent {
-
-  public MDRoot() {
-    super(null);
-  }
-
+public class TranslaterException extends Exception {
 
 }
