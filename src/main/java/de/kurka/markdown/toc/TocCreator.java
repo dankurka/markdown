@@ -26,12 +26,12 @@ public class TocCreator {
 
     StringBuffer buffer = new StringBuffer();
 
-    recurse(root, buffer, node);
+    render(root, buffer, node);
 
     return buffer.toString();
   }
 
-  private void recurse(MDNode node, StringBuffer buffer, MDNode tocNode){
+  private void render(MDNode node, StringBuffer buffer, MDNode tocNode){
     
 
     if(node instanceof MDParent){
@@ -47,7 +47,7 @@ public class TocCreator {
 
       List<MDNode> children = mdParent.getChildren();
       for (MDNode child : children) {
-        recurse(child, buffer, tocNode);
+        render(child, buffer, tocNode);
       }
       
       if (node.getDepth() != 0) {
