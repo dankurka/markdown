@@ -50,7 +50,6 @@ public class FileSystemTraverser {
       return mdParent;
 
     } else if (file.isFile()) {
-      // TODO more infos
       MDNode mdNode =
           new MDNode(parent, file.getName(), file.getAbsolutePath(), depth, path
               + changeExtension(file.getName()));

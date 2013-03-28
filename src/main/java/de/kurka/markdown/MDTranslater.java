@@ -13,13 +13,9 @@
  */
 package de.kurka.markdown;
 
-import org.apache.commons.io.IOUtils;
 import org.pegdown.PegDownProcessor;
-import org.pegdown.ast.RootNode;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
@@ -35,65 +31,43 @@ public class MDTranslater {
 
   private final MarkupWriter writer;
 
-  private String template;
+  private final String template;
 
-  private MDParent root;
-
-  public MDTranslater(TocCreator tocCreator, MarkupWriter writer) {
+  public MDTranslater(TocCreator tocCreator, MarkupWriter writer, String template) {
     this.tocCreator = tocCreator;
     this.writer = writer;
+    this.template = template;
 
   }
 
-  public void render(MDParent root) {
-    this.root = root;
-    template = readTemplate();
-
-    renderTree(root);
-
+  public void render(MDParent root) throws TranslaterException {
+    renderTree(root, root);
   }
 
-  private String readTemplate() {
-    // TODO
-    return "<html><head></head><body> <div class='toc'> $toc </div><div class='content'> $content </div> </body> </html>";
-  }
-
-  private void renderTree(MDNode node) {
+  private void renderTree(MDNode node, MDParent root) throws TranslaterException {
 
     if (node instanceof MDParent) {
-      // TODO toc!
       MDParent mdParent = (MDParent) node;
 
       List<MDNode> children = mdParent.getChildren();
       for (MDNode mdNode : children) {
-        renderTree(mdNode);
+        renderTree(mdNode, root);
       }
 
     } else {
 
-      try {
+      String markDown = getNodeContent(node.getPath());
 
-        String markDown = getNodeContent(node.getPath());
+      // parse description for TOC
 
-        // parse description for TOC
+      String htmlMarkDown = pegDownProcessor.markdownToHtml(markDown);
+      // RootNode rootNode = pegDownProcessor.parseMarkdown(markDown.toCharArray());
 
-        String htmlMarkDown = pegDownProcessor.markdownToHtml(markDown);
-        RootNode rootNode = pegDownProcessor.parseMarkdown(markDown.toCharArray());
+      String toc = tocCreator.createTocForNode(root, node);
 
-        String toc = tocCreator.createTocForNode(root, node);
+      String html = fillTemplate(htmlMarkDown, toc);
 
-        String html = fillTemplate(htmlMarkDown, toc);
-
-        writer.writeHTML(node, html);
-
-      } catch (TranslaterException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-        // TODO
-        throw new RuntimeException("TODO");
-      } finally {
-
-      }
+      writer.writeHTML(node, html);
 
     }
 
@@ -104,31 +78,11 @@ public class MDTranslater {
   }
 
   private String getNodeContent(String path) throws TranslaterException {
-    FileInputStream fileInputStream = null;
     try {
-      fileInputStream = new FileInputStream(new File(path));
-
-      String string = IOUtils.toString(fileInputStream, "UTF-8");
-      return string;
-
-    } catch (FileNotFoundException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-      // TODO
-      throw new TranslaterException();
-    } catch (IOException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-      // TODO
-      throw new TranslaterException();
-    } finally {
-      if (fileInputStream != null) {
-        try {
-          fileInputStream.close();
-        } catch (IOException ignored) {
-
-        }
-      }
+      return Util.getStringFromFile(new File(path));
+    } catch (IOException e1) {
+      throw new TranslaterException("can not load content from file: '" + path + "'", e1);
     }
+
   }
 }

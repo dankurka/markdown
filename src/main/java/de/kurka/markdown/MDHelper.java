@@ -14,6 +14,7 @@
 package de.kurka.markdown;
 
 import java.io.File;
+import java.io.IOException;
 
 import de.kurka.markdown.fs.FileSystemTraverser;
 import de.kurka.markdown.fs.MDParent;
@@ -23,7 +24,12 @@ public class MDHelper {
   private String sourceDirectory;
   private String outputDirectory;
 
+  private String templateFile;
+
   private boolean created = false;
+  private File sourceDirectoryFile;
+  private File outputDirectoryFile;
+  private String template;
 
   public MDHelper setSourceDirectory(String sourceDirectory) {
     this.sourceDirectory = sourceDirectory;
@@ -35,22 +41,80 @@ public class MDHelper {
     return this;
   }
 
-  public MDHelper create() {
-    // TODO some checking!
+  public MDHelper setTemplateFile(String templateFile) {
+    this.templateFile = templateFile;
+    return this;
+  }
+
+  public MDHelper create() throws MDHelperException {
+    // Source dir
+    if (sourceDirectory == null) {
+      throw new MDHelperException("no sourceDirectory set");
+    }
+    sourceDirectoryFile = new File(sourceDirectory);
+
+    if (!sourceDirectoryFile.exists()) {
+      throw new MDHelperException("sourceDirectory ('" + sourceDirectory + "') does not exist");
+    }
+
+    if (!sourceDirectoryFile.isDirectory()) {
+      throw new MDHelperException("sourceDirectory ('" + sourceDirectory + "') is no directory");
+    }
+
+    if (!sourceDirectoryFile.canRead()) {
+      throw new MDHelperException("sourceDirectory ('" + sourceDirectory
+          + "') can not read source directory");
+    }
+
+    // output dir
+    if (outputDirectory == null) {
+      throw new MDHelperException("no outputDirectory set");
+    }
+    outputDirectoryFile = new File(outputDirectory);
+    if (!outputDirectoryFile.exists()) {
+      if (!outputDirectoryFile.mkdirs()) {
+        throw new MDHelperException("outputDirectory ('" + outputDirectoryFile
+            + "') can not be created");
+      }
+
+    }
+
+    if (!outputDirectoryFile.isDirectory()) {
+      throw new MDHelperException("outputDirectory ('" + outputDirectoryFile + "') is no directory");
+    }
+
+    if (!outputDirectoryFile.canWrite()) {
+      throw new MDHelperException("outputDirectory ('" + outputDirectoryFile
+          + "') can not write to output directory");
+    }
+
+    // read template
+    if (templateFile == null) {
+      throw new MDHelperException("no templateFile set");
+    }
+    File file = new File(templateFile);
+
+    try {
+      template = Util.getStringFromFile(file);
+    } catch (IOException e) {
+      throw new MDHelperException("can not read template file", e);
+    }
+
     created = true;
     return this;
   }
 
-  public void translate() {
+  public void translate() throws TranslaterException {
 
     if (!created) {
       throw new IllegalStateException();
     }
 
     FileSystemTraverser traverser = new FileSystemTraverser();
-    MDParent mdRoot = traverser.traverse(new File(sourceDirectory));
+    MDParent mdRoot = traverser.traverse(sourceDirectoryFile);
 
-    new MDTranslater(new TocCreator(), new MarkupWriter(new File(outputDirectory))).render(mdRoot);
+    new MDTranslater(new TocCreator(), new MarkupWriter(outputDirectoryFile), template)
+        .render(mdRoot);
   }
 
 }
