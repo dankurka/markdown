@@ -11,14 +11,15 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package de.kurka.markdown;
+package com.google.gwt.site.markdown;
+
+import com.google.gwt.site.markdown.fs.FileSystemTraverser;
+import com.google.gwt.site.markdown.fs.MDParent;
+import com.google.gwt.site.markdown.toc.TocCreator;
 
 import java.io.File;
 import java.io.IOException;
 
-import de.kurka.markdown.fs.FileSystemTraverser;
-import de.kurka.markdown.fs.MDParent;
-import de.kurka.markdown.toc.TocCreator;
 
 public class MDHelper {
   private String sourceDirectory;

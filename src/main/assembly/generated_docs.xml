@@ -1,0 +1,16 @@
+<assembly>
+  <id>generated_docs</id>
+  <includeBaseDirectory>false</includeBaseDirectory>
+  <formats>
+    <format>zip</format>
+  </formats>
+  <fileSets>
+  	<fileSet>
+  		<directory>target/generated_docs</directory>
+  		<includes>
+ 			<include>**/*.html</include>
+ 		</includes>
+  		<outputDirectory></outputDirectory>
+  	</fileSet>
+  </fileSets>
+</assembly>

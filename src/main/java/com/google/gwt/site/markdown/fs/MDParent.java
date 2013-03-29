@@ -11,7 +11,7 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package de.kurka.markdown.fs;
+package com.google.gwt.site.markdown.fs;
 
 import java.util.LinkedList;
 import java.util.List;

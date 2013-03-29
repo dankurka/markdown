@@ -13,12 +13,13 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package de.kurka.markdown.toc;
+package com.google.gwt.site.markdown.toc;
+
+import com.google.gwt.site.markdown.fs.MDNode;
+import com.google.gwt.site.markdown.fs.MDParent;
 
 import java.util.List;
 
-import de.kurka.markdown.fs.MDNode;
-import de.kurka.markdown.fs.MDParent;
 
 public class TocCreator {
 

@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package de.kurka.markdown.fs;
+package com.google.gwt.site.markdown.fs;
 
 public class MDNode {
   private final String name;

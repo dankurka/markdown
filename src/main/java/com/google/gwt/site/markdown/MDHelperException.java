@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package de.kurka.markdown;
+package com.google.gwt.site.markdown;
 
 
 public class MDHelperException extends Exception {

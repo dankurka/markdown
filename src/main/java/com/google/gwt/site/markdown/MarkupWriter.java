@@ -11,14 +11,15 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package de.kurka.markdown;
+package com.google.gwt.site.markdown;
+
+import com.google.gwt.site.markdown.fs.MDNode;
+import com.google.gwt.site.markdown.fs.MDParent;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Stack;
 
-import de.kurka.markdown.fs.MDNode;
-import de.kurka.markdown.fs.MDParent;
 
 public class MarkupWriter {
 

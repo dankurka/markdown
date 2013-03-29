@@ -11,7 +11,11 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package de.kurka.markdown;
+package com.google.gwt.site.markdown;
+
+import com.google.gwt.site.markdown.fs.MDNode;
+import com.google.gwt.site.markdown.fs.MDParent;
+import com.google.gwt.site.markdown.toc.TocCreator;
 
 import org.pegdown.PegDownProcessor;
 
@@ -19,9 +23,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import de.kurka.markdown.fs.MDNode;
-import de.kurka.markdown.fs.MDParent;
-import de.kurka.markdown.toc.TocCreator;
 
 public class MDTranslater {
 
