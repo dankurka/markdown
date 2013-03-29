@@ -87,13 +87,13 @@ public class MDTranslater {
 		String baseUrl = buffer.toString();
 		StringBuffer headBuffer = new StringBuffer();
 
-		headBuffer.append("<script src='");
-		headBuffer.append(baseUrl);
-		headBuffer.append("js/test.js'></script>");
-
 		headBuffer.append("<link href='");
 		headBuffer.append(baseUrl);
-		headBuffer.append("css/test.css' rel='stylesheet' type='text/css'>");
+		headBuffer.append("css/main.css' rel='stylesheet' type='text/css'>");
+
+		headBuffer.append("<script src='");
+		headBuffer.append(baseUrl);
+		headBuffer.append("js/main.js'></script>");
 
 		return headBuffer.toString();
 	}
