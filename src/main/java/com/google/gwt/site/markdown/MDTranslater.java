@@ -13,77 +13,101 @@
  */
 package com.google.gwt.site.markdown;
 
-import com.google.gwt.site.markdown.fs.MDNode;
-import com.google.gwt.site.markdown.fs.MDParent;
-import com.google.gwt.site.markdown.toc.TocCreator;
-
-import org.pegdown.PegDownProcessor;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import org.pegdown.PegDownProcessor;
+
+import com.google.gwt.site.markdown.fs.MDNode;
+import com.google.gwt.site.markdown.fs.MDParent;
+import com.google.gwt.site.markdown.toc.TocCreator;
 
 public class MDTranslater {
 
-  private PegDownProcessor pegDownProcessor = new PegDownProcessor();
+	private PegDownProcessor pegDownProcessor = new PegDownProcessor();
 
-  private final TocCreator tocCreator;
+	private final TocCreator tocCreator;
 
-  private final MarkupWriter writer;
+	private final MarkupWriter writer;
 
-  private final String template;
+	private final String template;
 
-  public MDTranslater(TocCreator tocCreator, MarkupWriter writer, String template) {
-    this.tocCreator = tocCreator;
-    this.writer = writer;
-    this.template = template;
+	public MDTranslater(TocCreator tocCreator, MarkupWriter writer, String template) {
+		this.tocCreator = tocCreator;
+		this.writer = writer;
+		this.template = template;
 
-  }
+	}
 
-  public void render(MDParent root) throws TranslaterException {
-    renderTree(root, root);
-  }
+	public void render(MDParent root) throws TranslaterException {
+		renderTree(root, root);
+	}
 
-  private void renderTree(MDNode node, MDParent root) throws TranslaterException {
+	private void renderTree(MDNode node, MDParent root) throws TranslaterException {
 
-    if (node instanceof MDParent) {
-      MDParent mdParent = (MDParent) node;
+		if (node instanceof MDParent) {
+			MDParent mdParent = (MDParent) node;
 
-      List<MDNode> children = mdParent.getChildren();
-      for (MDNode mdNode : children) {
-        renderTree(mdNode, root);
-      }
+			List<MDNode> children = mdParent.getChildren();
+			for (MDNode mdNode : children) {
+				renderTree(mdNode, root);
+			}
 
-    } else {
+		} else {
 
-      String markDown = getNodeContent(node.getPath());
+			String markDown = getNodeContent(node.getPath());
 
-      // parse description for TOC
+			// parse description for TOC
 
-      String htmlMarkDown = pegDownProcessor.markdownToHtml(markDown);
-      // RootNode rootNode = pegDownProcessor.parseMarkdown(markDown.toCharArray());
+			String htmlMarkDown = pegDownProcessor.markdownToHtml(markDown);
+			// RootNode rootNode =
+			// pegDownProcessor.parseMarkdown(markDown.toCharArray());
 
-      String toc = tocCreator.createTocForNode(root, node);
+			String toc = tocCreator.createTocForNode(root, node);
 
-      String html = fillTemplate(htmlMarkDown, toc);
+			String head = createHeadForNode(node);
 
-      writer.writeHTML(node, html);
+			String html = fillTemplate(htmlMarkDown, toc, head);
 
-    }
+			writer.writeHTML(node, html);
 
-  }
+		}
 
-  private String fillTemplate(String html, String toc) {
-    return template.replace("$content", html).replace("$toc", toc);
-  }
+	}
 
-  private String getNodeContent(String path) throws TranslaterException {
-    try {
-      return Util.getStringFromFile(new File(path));
-    } catch (IOException e1) {
-      throw new TranslaterException("can not load content from file: '" + path + "'", e1);
-    }
+	private String createHeadForNode(MDNode node) {
+		int depth = node.getDepth();
+		StringBuffer buffer = new StringBuffer();
 
-  }
+		for (int i = 1; i < depth; i++) {
+			buffer.append("../");
+		}
+
+		String baseUrl = buffer.toString();
+		StringBuffer headBuffer = new StringBuffer();
+
+		headBuffer.append("<script src='");
+		headBuffer.append(baseUrl);
+		headBuffer.append("js/test.js'></script>");
+
+		headBuffer.append("<link href='");
+		headBuffer.append(baseUrl);
+		headBuffer.append("css/test.css' rel='stylesheet' type='text/css'>");
+
+		return headBuffer.toString();
+	}
+
+	private String fillTemplate(String html, String toc, String head) {
+		return template.replace("$content", html).replace("$toc", toc).replace("$head", head);
+	}
+
+	private String getNodeContent(String path) throws TranslaterException {
+		try {
+			return Util.getStringFromFile(new File(path));
+		} catch (IOException e1) {
+			throw new TranslaterException("can not load content from file: '" + path + "'", e1);
+		}
+
+	}
 }

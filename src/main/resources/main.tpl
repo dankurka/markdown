@@ -1,5 +1,8 @@
+<!doctype html>
 <html>
-	<head></head>
+	<head>
+		$head
+	</head>
 	<body>
 		<div class='toc'>
 			$toc
