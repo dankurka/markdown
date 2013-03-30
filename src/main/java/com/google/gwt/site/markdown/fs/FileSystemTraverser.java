@@ -13,6 +13,12 @@
  */
 package com.google.gwt.site.markdown.fs;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
@@ -23,12 +29,6 @@ import java.util.Set;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 
 public class FileSystemTraverser {
 
@@ -76,6 +76,7 @@ public class FileSystemTraverser {
 			for (String string : diffNodeSet) {
 				buffer.append(string + " ");
 			}
+      // TODO throw exception?
 			System.out.println("Warning: elements in order.xml missing " + buffer.toString());
 		}
 
@@ -84,6 +85,7 @@ public class FileSystemTraverser {
 			for (String string : diffOrderSet) {
 				buffer.append(string + " ");
 			}
+      // TODO throw exception?
 			System.out.println("Warning: Too much elements in order.xml " + buffer.toString());
 		}
 	}
@@ -92,6 +94,7 @@ public class FileSystemTraverser {
 		HashSet<String> nodeSet = new HashSet<String>();
 
 		for (MDNode child : children) {
+      // TODO condition looks complicated?
 			if (child.getName().endsWith(".md") || child.isFolder()) {
 				if (child.isFolder()) {
 					nodeSet.add(child.getName() + "/");
@@ -172,6 +175,7 @@ public class FileSystemTraverser {
 
 	}
 
+  // TODO needs cleaning!
 	private List<String> parseSortingOrder(File file) {
 		DocumentBuilder builder;
 		List<String> list = new LinkedList<String>();
@@ -194,6 +198,7 @@ public class FileSystemTraverser {
 
 				if (entryNode.getChildNodes().getLength() != 1) {
 					// TODO error
+
 				}
 				list.add(entryNode.getChildNodes().item(0).getNodeValue());
 			}
