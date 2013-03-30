@@ -16,52 +16,60 @@
 package com.google.gwt.site.markdown.fs;
 
 public class MDNode {
-  private final String name;
-  private final MDParent parent;
-  private final String path;
+	private final String name;
+	private final MDParent parent;
+	private final String path;
 
-  private String description;
-  private final int depth;
-  private final String relativePath;
+	private String description;
+	private final int depth;
+	private final String relativePath;
 
-  public MDNode(MDParent parent, String name, String path, int depth, String relativePath) {
-    this.parent = parent;
-    this.name = name;
-    this.path = path;
-    this.depth = depth;
-    this.relativePath = relativePath;
-  }
+	public MDNode(MDParent parent, String name, String path, int depth, String relativePath) {
+		this.parent = parent;
+		this.name = name;
+		this.path = path;
+		this.depth = depth;
+		this.relativePath = relativePath;
+	}
 
-  public String getName() {
-    return name;
-  }
+	public String getName() {
+		return name;
+	}
 
-  public MDParent getParent() {
-    return parent;
-  }
+	public MDParent getParent() {
+		return parent;
+	}
 
-  public String getPath() {
-    return path;
-  }
+	public String getPath() {
+		return path;
+	}
 
-  public void setDescription(String description) {
-    this.description = description;
-  }
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
-  public String getDescription() {
-    return description;
-  }
+	public String getDescription() {
+		return description;
+	}
 
-  public int getDepth() {
-    return depth;
-  }
+	public int getDepth() {
+		return depth;
+	}
 
-  @Override
-  public String toString() {
-    return "MDNode [name=" + name + ", depth=" + depth + "]";
-  }
+	@Override
+	public String toString() {
+		return "MDNode [name=" + name + ", depth=" + depth + "]";
+	}
 
-  public String getRelativePath() {
-    return relativePath;
-  }
+	public String getRelativePath() {
+		return relativePath;
+	}
+
+	public boolean isFolder() {
+		return false;
+	}
+
+	public MDParent asFolder() {
+		return (MDParent) this;
+	}
 }

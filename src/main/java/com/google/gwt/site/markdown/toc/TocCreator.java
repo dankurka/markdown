@@ -15,73 +15,66 @@
  */
 package com.google.gwt.site.markdown.toc;
 
+import java.util.List;
+
 import com.google.gwt.site.markdown.fs.MDNode;
 import com.google.gwt.site.markdown.fs.MDParent;
 
-import java.util.List;
-
-
 public class TocCreator {
 
-  public String createTocForNode(MDParent root, MDNode node) {
+	public String createTocForNode(MDParent root, MDNode node) {
 
-    StringBuffer buffer = new StringBuffer();
+		StringBuffer buffer = new StringBuffer();
 
-    render(root, buffer, node);
+		render(root, buffer, node);
 
-    return buffer.toString();
-  }
+		return buffer.toString();
+	}
 
-  private void render(MDNode node, StringBuffer buffer, MDNode tocNode){
-    
+	private void render(MDNode node, StringBuffer buffer, MDNode tocNode) {
 
-    if(node instanceof MDParent){
-      MDParent mdParent = (MDParent) node;
-      buffer.append("<ul>");
+		if (node.isFolder()) {
+			MDParent mdParent = node.asFolder();
+			buffer.append("<ul>");
 
-      if (node.getDepth() != 0) {
-        buffer.append("<li>");
-        buffer.append(node.getName());
-        buffer.append("<ul>");
+			if (node.getDepth() != 0) {
+				buffer.append("<li>");
+				buffer.append(node.getName());
+				buffer.append("<ul>");
 
-      }
+			}
 
-      List<MDNode> children = mdParent.getChildren();
-      for (MDNode child : children) {
-        render(child, buffer, tocNode);
-      }
-      
-      if (node.getDepth() != 0) {
+			List<MDNode> children = mdParent.getChildren();
+			for (MDNode child : children) {
+				render(child, buffer, tocNode);
+			}
 
-        buffer.append("</li>");
-        buffer.append("</ul>");
+			if (node.getDepth() != 0) {
 
-      }
+				buffer.append("</li>");
+				buffer.append("</ul>");
 
-      buffer.append("</ul>");
+			}
 
-    }else{
+			buffer.append("</ul>");
 
+		} else {
 
+			StringBuffer url = new StringBuffer();
+			if (tocNode.getDepth() > 0) {
+				for (int i = 1; i < tocNode.getDepth(); i++) {
+					url.append("../");
+				}
+			}
 
-      StringBuffer url = new StringBuffer();
-      if (tocNode.getDepth() > 0) {
-        for (int i = 1; i < tocNode.getDepth(); i++) {
-          url.append("../");
-        }
-      }
+			url.append(node.getRelativePath());
 
-      url.append(node.getRelativePath());
+			buffer.append("<li>");
+			// TODO escape HTML
+			buffer.append("<a href='" + url.toString() + "'>" + node.getName().substring(0, node.getName().length() - ".md".length()) + "</a>");
+			buffer.append("</li>");
+		}
 
-      buffer.append("<li>");
-      //TODO escape HTML
-      buffer.append("<a href='" + url.toString() + "'>"
-          + node.getName().substring(0, node.getName().length() - ".md".length())
-          + "</a>");
-      buffer.append("</li>");
-    }
-    
-  }
-
+	}
 
 }

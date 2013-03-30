@@ -46,8 +46,8 @@ public class MDTranslater {
 
 	private void renderTree(MDNode node, MDParent root) throws TranslaterException {
 
-		if (node instanceof MDParent) {
-			MDParent mdParent = (MDParent) node;
+		if (node.isFolder()) {
+			MDParent mdParent = node.asFolder();
 
 			List<MDNode> children = mdParent.getChildren();
 			for (MDNode mdNode : children) {

@@ -18,22 +18,44 @@ import java.util.List;
 
 public class MDParent extends MDNode {
 
-  public MDParent(MDParent parent, String name, String path, int depth, String relativePath) {
-    super(parent, name, path, depth, relativePath);
-  }
+	public MDParent(MDParent parent, String name, String path, int depth, String relativePath) {
+		super(parent, name, path, depth, relativePath);
+	}
 
-  private List<MDNode> children = new LinkedList<MDNode>();
+	private List<MDNode> children = new LinkedList<MDNode>();
+	private List<String> sortingOrder;
 
-  @Override
-  public String toString() {
-    return "MDParent [getName()=" + getName() + ", getDepth()=" + getDepth() + "]";
-  }
+	@Override
+	public String toString() {
+		return "MDParent [getName()=" + getName() + ", getDepth()=" + getDepth() + "]";
+	}
 
-  public void addChild(MDNode node) {
-    children.add(node);
-  }
+	public void setChildren(List<MDNode> children) {
+		this.children = children;
+	}
 
-  public List<MDNode> getChildren() {
-    return children;
-  }
+	public void addChild(MDNode node) {
+		children.add(node);
+	}
+
+	public List<String> getSortingOrder() {
+		return sortingOrder;
+	}
+
+	public List<MDNode> getChildren() {
+		return children;
+	}
+
+	public void setSortingOrder(List<String> sortingOrder) {
+		this.sortingOrder = sortingOrder;
+	}
+
+	public boolean isNeedsSorting() {
+		return sortingOrder != null;
+	}
+
+	@Override
+	public boolean isFolder() {
+		return true;
+	}
 }
