@@ -110,7 +110,11 @@ public class MDHelper {
 		FileSystemTraverser traverser = new FileSystemTraverser();
 		MDParent mdRoot = traverser.traverse(sourceDirectoryFile);
 
-		new FileSorter().sort(mdRoot);
+		try {
+			new FileSorter().sort(mdRoot);
+		} catch (SortingException e) {
+			throw new TranslaterException("can not sort tree", e);
+		}
 
 		new MDTranslater(new TocCreator(), new MarkupWriter(outputDirectoryFile), template).render(mdRoot);
 	}

@@ -30,7 +30,7 @@ import org.xml.sax.SAXException;
 
 public class FileSystemTraverser {
 
-	private static final String ORDER_XML = "order.xml";
+	public static final String ORDER_XML = "order.xml";
 
 	public MDParent traverse(File file) {
 		return traverse(null, file, 0, "");
@@ -62,8 +62,8 @@ public class FileSystemTraverser {
 
 		} else if (file.isFile()) {
 			if (file.getName().equals(ORDER_XML)) {
-				List<String> sortingOrder = parseSortingOrder(file);
-				parent.setSortingOrder(sortingOrder);
+				List<String> sortingStructure = parseSortingStructure(file);
+				parent.setSortingStructure(sortingStructure);
 
 			} else {
 				MDNode mdNode = new MDNode(parent, file.getName(), file.getAbsolutePath(), depth, path + changeExtension(file.getName()));
@@ -78,7 +78,7 @@ public class FileSystemTraverser {
 
 	}
 
-	private List<String> parseSortingOrder(File file) {
+	private List<String> parseSortingStructure(File file) {
 		DocumentBuilder builder;
 		List<String> list = new LinkedList<String>();
 		try {
@@ -86,8 +86,6 @@ public class FileSystemTraverser {
 
 			Document document = builder.parse(file);
 			Element documentElement = document.getDocumentElement();
-
-			System.out.println(documentElement.getTagName());
 
 			NodeList childNodes = documentElement.getChildNodes();
 			for (int i = 0; i < childNodes.getLength(); i++) {

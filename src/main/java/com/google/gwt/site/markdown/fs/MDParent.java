@@ -23,7 +23,7 @@ public class MDParent extends MDNode {
 	}
 
 	private List<MDNode> children = new LinkedList<MDNode>();
-	private List<String> sortingOrder;
+	private List<String> sortingStructure;
 
 	@Override
 	public String toString() {
@@ -38,20 +38,20 @@ public class MDParent extends MDNode {
 		children.add(node);
 	}
 
-	public List<String> getSortingOrder() {
-		return sortingOrder;
+	public List<String> getSortingStructure() {
+		return sortingStructure;
 	}
 
 	public List<MDNode> getChildren() {
 		return children;
 	}
 
-	public void setSortingOrder(List<String> sortingOrder) {
-		this.sortingOrder = sortingOrder;
+	public void setSortingStructure(List<String> sortingOrder) {
+		this.sortingStructure = sortingOrder;
 	}
 
 	public boolean isNeedsSorting() {
-		return sortingOrder != null;
+		return sortingStructure != null;
 	}
 
 	@Override
